@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource proyecto {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  ID              Int               @id
+  usuario         usuario           @relation(fields: [ID], references: [ID], onUpdate: Restrict, map: "admin_ibfk_1")
+  manejanusuarios manejanusuarios[]
+}
+
+model benefactor {
+  ID        Int         @id
+  empresa   String?     @proyecto.VarChar(50)
+  usuario   usuario     @relation(fields: [ID], references: [ID], onUpdate: Restrict, map: "benefactor_ibfk_1")
+  beneficio beneficio[]
+}
+
+model beneficio {
+  ID               Int                @id @default(autoincrement())
+  empresa          String             @proyecto.VarChar(50)
+  imagen           Bytes              @proyecto.Blob
+  descripcion      String             @proyecto.VarChar(100)
+  Benefactor       Int
+  benefactor       benefactor         @relation(fields: [Benefactor], references: [ID], onUpdate: Restrict, map: "beneficio_ibfk_1")
+  utilizabeneficio utilizabeneficio[]
+
+  @@index([Benefactor], map: "Benefactor")
+}
+
+model contactan {
+  ID       Int      @id @default(autoincrement())
+  Contacto Int
+  Usuario  Int
+  contacto contacto @relation(fields: [Contacto], references: [ID], onUpdate: Restrict, map: "contactan_ibfk_1")
+  usuario  usuario  @relation(fields: [Usuario], references: [ID], onUpdate: Restrict, map: "contactan_ibfk_2")
+
+  @@index([Contacto], map: "Contacto")
+  @@index([Usuario], map: "Usuario")
+}
+
+model contacto {
+  ID               Int         @id @default(autoincrement())
+  logo             Bytes       @proyecto.Blob
+  link             String      @proyecto.VarChar(200)
+  nroInteracciones Int
+  contactan        contactan[]
+}
+
+model donacion {
+  ID             Int             @id @default(autoincrement())
+  Donante        Int
+  cantidad       Int
+  tipo           String          @proyecto.VarChar(30)
+  fecha          DateTime        @proyecto.Date
+  valor          Int
+  donante        donante         @relation(fields: [Donante], references: [ID], onUpdate: Restrict, map: "donacion_ibfk_1")
+  recolectadosen recolectadosen?
+
+  @@index([Donante], map: "Donante")
+}
+
+model donante {
+  ID               Int                @id
+  cuenta           Int
+  usuario          usuario            @relation(fields: [ID], references: [ID], onUpdate: Restrict, map: "donante_ibfk_1")
+  donacion         donacion[]
+  utilizabeneficio utilizabeneficio[]
+}
+
+model lugarrecoleccion {
+  ID                     Int                      @id @default(autoincrement())
+  nombre                 String                   @proyecto.VarChar(50)
+  imagen                 Bytes                    @proyecto.Blob
+  latitud                Int
+  longitud               Int
+  direrccion             String                   @proyecto.VarChar(200)
+  manejalugarrecoleccion manejalugarrecoleccion[]
+  recolectadosen         recolectadosen[]
+  recolector             recolector[]
+}
+
+model manejalugarrecoleccion {
+  ID               Int              @id
+  accion           String?          @proyecto.VarChar(10)
+  Recolector       Int
+  LugarRecoleccion Int
+  recolector       recolector       @relation(fields: [Recolector], references: [ID], onUpdate: Restrict, map: "manejalugarrecoleccion_ibfk_1")
+  lugarrecoleccion lugarrecoleccion @relation(fields: [LugarRecoleccion], references: [ID], onUpdate: Restrict, map: "manejalugarrecoleccion_ibfk_2")
+
+  @@index([LugarRecoleccion], map: "LugarRecoleccion")
+  @@index([Recolector], map: "Recolector")
+}
+
+model manejanusuarios {
+  ID      Int      @id @default(autoincrement())
+  fecha   DateTime @proyecto.Date
+  accion  String   @proyecto.VarChar(10)
+  Admin   Int
+  Usuario Int
+  admin   admin    @relation(fields: [Admin], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_1")
+  usuario usuario  @relation(fields: [Usuario], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_2")
+
+  @@index([Admin], map: "Admin")
+  @@index([Usuario], map: "Usuario")
+}
+
+model recolectadosen {
+  Donacion         Int              @id
+  Lugar            Int
+  donacion         donacion         @relation(fields: [Donacion], references: [ID], onUpdate: Restrict, map: "recolectadosen_ibfk_1")
+  lugarrecoleccion lugarrecoleccion @relation(fields: [Lugar], references: [ID], onUpdate: Restrict, map: "recolectadosen_ibfk_2")
+
+  @@index([Lugar], map: "Lugar")
+}
+
+model recolector {
+  ID                     Int                      @id
+  lugarRecoleccion       Int
+  usuario                usuario                  @relation(fields: [ID], references: [ID], onUpdate: Restrict, map: "recolector_ibfk_1")
+  lugarrecoleccion       lugarrecoleccion         @relation(fields: [lugarRecoleccion], references: [ID], onUpdate: Restrict, map: "recolector_ibfk_2")
+  manejalugarrecoleccion manejalugarrecoleccion[]
+
+  @@index([lugarRecoleccion], map: "lugarRecoleccion")
+}
+
+model usuario {
+  ID              Int               @id @default(autoincrement())
+  nombre          String            @proyecto.VarChar(30)
+  apellido        String            @proyecto.VarChar(30)
+  email           String            @proyecto.VarChar(100)
+  contrase_a      String            @map("contraseña") @proyecto.VarChar(30)
+  img_perfil      Bytes?            @proyecto.Blob
+  latitud         Int?
+  longitud        Int?
+  direccion       String?           @proyecto.VarChar(200)
+  admin           admin?
+  benefactor      benefactor?
+  contactan       contactan[]
+  donante         donante?
+  manejanusuarios manejanusuarios[]
+  recolector      recolector?
+}
+
+model utilizabeneficio {
+  Donante   Int
+  Beneficio Int
+  fecha     DateTime  @proyecto.Date
+  valor     Int
+  donante   donante   @relation(fields: [Donante], references: [ID], onUpdate: Restrict, map: "utilizabeneficio_ibfk_1")
+  beneficio beneficio @relation(fields: [Beneficio], references: [ID], onUpdate: Restrict, map: "utilizabeneficio_ibfk_2")
+
+  @@id([Donante, fecha])
+  @@index([Beneficio], map: "Beneficio")
+}
