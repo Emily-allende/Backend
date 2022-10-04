@@ -2,29 +2,23 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource proyecto {
+datasource ecoloops {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model admin {
-  ID              Int               @id
-  usuario         usuario           @relation(fields: [ID], references: [ID], onUpdate: Restrict, map: "admin_ibfk_1")
-  manejanusuarios manejanusuarios[]
-}
-
 model benefactor {
   ID        Int         @id
-  empresa   String?     @proyecto.VarChar(50)
+  empresa   String?     @ecoloops.VarChar(50)
   usuario   usuario     @relation(fields: [ID], references: [ID], onUpdate: Restrict, map: "benefactor_ibfk_1")
   beneficio beneficio[]
 }
 
 model beneficio {
   ID               Int                @id @default(autoincrement())
-  empresa          String             @proyecto.VarChar(50)
-  imagen           Bytes              @proyecto.Blob
-  descripcion      String             @proyecto.VarChar(100)
+  empresa          String             @ecoloops.VarChar(50)
+  imagen           Bytes?             @ecoloops.Blob
+  descripcion      String             @ecoloops.VarChar(100)
   Benefactor       Int
   benefactor       benefactor         @relation(fields: [Benefactor], references: [ID], onUpdate: Restrict, map: "beneficio_ibfk_1")
   utilizabeneficio utilizabeneficio[]
@@ -45,8 +39,8 @@ model contactan {
 
 model contacto {
   ID               Int         @id @default(autoincrement())
-  logo             Bytes       @proyecto.Blob
-  link             String      @proyecto.VarChar(200)
+  logo             Bytes?      @ecoloops.Blob
+  link             String      @ecoloops.VarChar(200)
   nroInteracciones Int
   contactan        contactan[]
 }
@@ -55,8 +49,8 @@ model donacion {
   ID             Int             @id @default(autoincrement())
   Donante        Int
   cantidad       Int
-  tipo           String          @proyecto.VarChar(30)
-  fecha          DateTime        @proyecto.Date
+  tipo           String          @ecoloops.VarChar(30)
+  fecha          DateTime        @ecoloops.Date
   valor          Int
   donante        donante         @relation(fields: [Donante], references: [ID], onUpdate: Restrict, map: "donacion_ibfk_1")
   recolectadosen recolectadosen?
@@ -74,11 +68,13 @@ model donante {
 
 model lugarrecoleccion {
   ID                     Int                      @id @default(autoincrement())
-  nombre                 String                   @proyecto.VarChar(50)
-  imagen                 Bytes                    @proyecto.Blob
+  nombre                 String                   @ecoloops.VarChar(50)
+  imagen                 Bytes?                   @ecoloops.Blob
   latitud                Int
   longitud               Int
-  direrccion             String                   @proyecto.VarChar(200)
+  dir_esquina            String?                  @ecoloops.VarChar(200)
+  dir_nrocalle           Int?
+  dir_calle              String?                  @ecoloops.VarChar(200)
   manejalugarrecoleccion manejalugarrecoleccion[]
   recolectadosen         recolectadosen[]
   recolector             recolector[]
@@ -86,7 +82,7 @@ model lugarrecoleccion {
 
 model manejalugarrecoleccion {
   ID               Int              @id
-  accion           String?          @proyecto.VarChar(10)
+  accion           String?          @ecoloops.VarChar(30)
   Recolector       Int
   LugarRecoleccion Int
   recolector       recolector       @relation(fields: [Recolector], references: [ID], onUpdate: Restrict, map: "manejalugarrecoleccion_ibfk_1")
@@ -97,16 +93,16 @@ model manejalugarrecoleccion {
 }
 
 model manejanusuarios {
-  ID      Int      @id @default(autoincrement())
-  fecha   DateTime @proyecto.Date
-  accion  String   @proyecto.VarChar(10)
-  Admin   Int
-  Usuario Int
-  admin   admin    @relation(fields: [Admin], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_1")
-  usuario usuario  @relation(fields: [Usuario], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_2")
+  ID            Int           @id @default(autoincrement())
+  fecha         DateTime      @ecoloops.Date
+  accion        String        @ecoloops.VarChar(30)
+  Administrador Int
+  Usuario       Int
+  administrador administrador @relation(fields: [Administrador], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_1")
+  usuario       usuario       @relation(fields: [Usuario], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_2")
 
-  @@index([Admin], map: "Admin")
   @@index([Usuario], map: "Usuario")
+  @@index([Administrador], map: "Administrador")
 }
 
 model recolectadosen {
@@ -130,15 +126,18 @@ model recolector {
 
 model usuario {
   ID              Int               @id @default(autoincrement())
-  nombre          String            @proyecto.VarChar(30)
-  apellido        String            @proyecto.VarChar(30)
-  email           String            @proyecto.VarChar(100)
-  contrase_a      String            @map("contraseña") @proyecto.VarChar(30)
-  img_perfil      Bytes?            @proyecto.Blob
+  nombre          String            @ecoloops.VarChar(30)
+  apellido        String            @ecoloops.VarChar(30)
+  email           String            @ecoloops.VarChar(100)
+  contrase_a      String            @map("contraseña") @ecoloops.VarChar(30)
+  img_perfil      Bytes?            @ecoloops.Blob
   latitud         Int?
   longitud        Int?
-  direccion       String?           @proyecto.VarChar(200)
-  admin           admin?
+  dir_esquina     String?           @ecoloops.VarChar(200)
+  dir_nrocalle    Int?
+  dir_calle       String?           @ecoloops.VarChar(200)
+  empresa         String?           @ecoloops.VarChar(100)
+  administrador   administrador?
   benefactor      benefactor?
   contactan       contactan[]
   donante         donante?
@@ -149,11 +148,17 @@ model usuario {
 model utilizabeneficio {
   Donante   Int
   Beneficio Int
-  fecha     DateTime  @proyecto.Date
+  fecha     DateTime  @ecoloops.Date
   valor     Int
   donante   donante   @relation(fields: [Donante], references: [ID], onUpdate: Restrict, map: "utilizabeneficio_ibfk_1")
   beneficio beneficio @relation(fields: [Beneficio], references: [ID], onUpdate: Restrict, map: "utilizabeneficio_ibfk_2")
 
   @@id([Donante, fecha])
   @@index([Beneficio], map: "Beneficio")
+}
+
+model administrador {
+  ID              Int               @id
+  usuario         usuario           @relation(fields: [ID], references: [ID], onUpdate: Restrict, map: "administrador_ibfk_1")
+  manejanusuarios manejanusuarios[]
 }
