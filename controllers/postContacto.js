@@ -3,14 +3,14 @@ import { verifyToken } from './verifyToken';
 const express = require('express')
 const { PrismaClient } = require('@prisma/client')
 
-const app = express()
+const index = express()
 const prisma = new PrismaClient()
 
-app.use(express.json());
+index.use(express.json());
 
 const jwt= require("jsonwebtoken")
 
-app.post("/contactos", verifyToken, async (req,res)=>{
+index.post("/contactos", verifyToken, async (req,res)=>{
     const {nombre, logo, link}= req.body
     const result = await prisma.usuario.create({
       data:{
@@ -32,4 +32,4 @@ app.post("/contactos", verifyToken, async (req,res)=>{
     })
 })
 
-app.listen(3000,()=>console.log("Corriendo"))
+index.listen(3000,()=>console.log("Corriendo"))

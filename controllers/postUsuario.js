@@ -3,12 +3,12 @@ const express = require("express")
 const jwt = require("jsonwebtoken")
 const { PrismaClient } = require("@prisma/client")
 
-const app = express()
+const index = express()
 const prisma = new PrismaClient()
 
-app.use(express.json())
+index.use(express.json())
 
-app.post('/user/singup', async (req, res)=>{
+index.post('/user/singup', async (req, res)=>{
     const {nombre, apellido, empresa, email, contraseña, img_perfil, ubicacion:{lat, long}} = req.body;
     const user = await prisma.usuario.create({
       data:{
@@ -42,4 +42,4 @@ try{
   return res.status(400).json({message:'Error'})
 }
  
-app.listen(3000, ()=> console.log("Corriendo en el puerto 3000"));
+index.listen(3000, ()=> console.log("Corriendo en el puerto 3000"));

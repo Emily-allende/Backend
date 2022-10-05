@@ -3,12 +3,12 @@ import { verifyToken } from '../verifyToken'
 const express = require('express')
 const { PrismaClient } = require('@prisma/client')
 
-const app = express()
+const index = express()
 const prisma = new PrismaClient()
 
-app.use(express.json());
+index.use(express.json());
 
-app.delete("/admin/usuario/:id", verifyToken ,async (req, res)=>{
+index.delete("/admin/usuario/:id", verifyToken ,async (req, res)=>{
     const usuario = await prisma.usuario.delete({
         where:{ID}
     })
@@ -24,4 +24,4 @@ app.delete("/admin/usuario/:id", verifyToken ,async (req, res)=>{
         }})
 })
 
-app.listen(3000, ()=> console.log("Corriendo en el puerto 3000"))
+index.listen(3000, ()=> console.log("Corriendo en el puerto 3000"))

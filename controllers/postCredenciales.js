@@ -1,11 +1,11 @@
 const express = require('express')
 const { PrismaClient } = require('@prisma/client')
 
-const app = express()
+const index = express()
 const prisma = new PrismaClient()
-app.use(express.json())
+index.use(express.json())
  
- app.post('/user/singin', async (req, res)=>{
+ index.post('/user/singin', async (req, res)=>{
   const {email, contraseña}= req.body
   const result = await prisma.usuario.create({
     data:{
@@ -16,5 +16,5 @@ app.use(express.json())
   res.json(result)
  })
 
- app.listen(3000, ()=> console.log("Corriendo"))
+ index.listen(3000, ()=> console.log("Corriendo"))
  

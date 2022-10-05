@@ -3,12 +3,12 @@ import { verifyToken } from '../verifyToken';
 const express = require('express')
 const { PrismaClient } = require('@prisma/client')
 
-const app = express()
+const index = express()
 const prisma = new PrismaClient()
 
-app.use(express.json());
+index.use(express.json());
 
-app.post("/beneficio/:id/utilizar", verifyToken, async (req, res)=>{
+index.post("/beneficio/:id/utilizar", verifyToken, async (req, res)=>{
     const {id_user, valor_token} = req.body;
     const beneficio = await prisma.beneficio.create({
         data:{
@@ -19,4 +19,4 @@ app.post("/beneficio/:id/utilizar", verifyToken, async (req, res)=>{
     res.json(beneficio);
 })
 
-app.listen(3000, ()=> console.log("Corriendo en el puerto 3000"));
+index.listen(3000, ()=> console.log("Corriendo en el puerto 3000"));
