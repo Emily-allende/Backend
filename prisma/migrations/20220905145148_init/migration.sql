@@ -21,7 +21,7 @@ CREATE TABLE `beneficio` (
     `descripcion` VARCHAR(100) NOT NULL,
     `Benefactor` INTEGER NOT NULL,
 
-    INDEX `Benefactor`(`Benefactor`),
+    app `Benefactor`(`Benefactor`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -31,8 +31,8 @@ CREATE TABLE `contactan` (
     `Contacto` INTEGER NOT NULL,
     `Usuario` INTEGER NOT NULL,
 
-    INDEX `Contacto`(`Contacto`),
-    INDEX `Usuario`(`Usuario`),
+    app `Contacto`(`Contacto`),
+    app `Usuario`(`Usuario`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -55,7 +55,7 @@ CREATE TABLE `donacion` (
     `fecha` DATE NOT NULL,
     `valor` INTEGER NOT NULL,
 
-    INDEX `Donante`(`Donante`),
+    app `Donante`(`Donante`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -86,8 +86,8 @@ CREATE TABLE `manejalugarrecoleccion` (
     `Recolector` INTEGER NOT NULL,
     `LugarRecoleccion` INTEGER NOT NULL,
 
-    INDEX `LugarRecoleccion`(`LugarRecoleccion`),
-    INDEX `Recolector`(`Recolector`),
+    app `LugarRecoleccion`(`LugarRecoleccion`),
+    app `Recolector`(`Recolector`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -99,8 +99,8 @@ CREATE TABLE `manejanusuarios` (
     `Admin` INTEGER NOT NULL,
     `Usuario` INTEGER NOT NULL,
 
-    INDEX `Admin`(`Admin`),
-    INDEX `Usuario`(`Usuario`),
+    app `Admin`(`Admin`),
+    app `Usuario`(`Usuario`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -109,7 +109,7 @@ CREATE TABLE `recolectadosen` (
     `Donacion` INTEGER NOT NULL,
     `Lugar` INTEGER NOT NULL,
 
-    INDEX `Lugar`(`Lugar`),
+    app `Lugar`(`Lugar`),
     PRIMARY KEY (`Donacion`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -118,7 +118,7 @@ CREATE TABLE `recolector` (
     `ID` INTEGER NOT NULL,
     `lugarRecoleccion` INTEGER NOT NULL,
 
-    INDEX `lugarRecoleccion`(`lugarRecoleccion`),
+    app `lugarRecoleccion`(`lugarRecoleccion`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -144,7 +144,7 @@ CREATE TABLE `utilizabeneficio` (
     `fecha` DATE NOT NULL,
     `valor` INTEGER NOT NULL,
 
-    INDEX `Beneficio`(`Beneficio`),
+    app `Beneficio`(`Beneficio`),
     PRIMARY KEY (`Donante`, `fecha`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

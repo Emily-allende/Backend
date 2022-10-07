@@ -1,18 +1,11 @@
-import { verifyToken } from './verifyToken';
+// import { verifyToken } from './verifyToken';
+import express from 'express';
+import { PrismaClient } from '@prisma/client'
 
-const express = require('express')
-const { PrismaClient } = require('@prisma/client')
-
-const index = express()
 const prisma = new PrismaClient()
+const usuarioGetRouter = express.Router();
 
-index.use(express.json());
-
-index.get("/usuario", verifyToken,async (req, res)=>{
-    const user = await prisma.usuario.findUnique({
-        where:{id}
-    })
-        res.json(user);
-});
-
-index.listen(3000,()=> console.log("Servidor corriendo en el puerto 3000"))
+usuarioGetRouter.get("/", async (req, res) => { 
+  const post = await prisma.usuario.findUnique({where: {ID: 222}})
+  res.json(post);
+})

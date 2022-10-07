@@ -1,15 +1,11 @@
-import postUsuario from "./controllers/postUsuario";
+import {usuarioRouter} from "./controllers/postUsuario.js";
+import {usuarioGetRouter} from "./controllers/getUsuario.js";
+import express from "express";
 
-const express = require('express')
-const { PrismaClient } = require('@prisma/client')
-const index = express()
+const app = express()
+app.use(express.json()) 
 
-index.use(express.json()) 
+app.use("/users", usuarioRouter);
+app.use("/users", usuarioGetRouter);
 
-index.post("/user/singup", postUsuario);
-// index.get('/', function(req, res) {
-//      res.send("Hola");
-//    }
-// );
-
-index .listen(3000, () => console.log("Servidor corriendo en el puerto 3000, http://localhost:3000"))
+app.listen(3000, () => console.log("Servidor corriendo en el puerto 3000, http://localhost:3000"))

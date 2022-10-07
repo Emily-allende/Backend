@@ -1,10 +1,10 @@
 const express = require('express')
 const { PrismaClient } = require('@prisma/client')
 
-const index = express()
+const app = express()
 const prisma = new PrismaClient()
 
-index.delete('/user/singou', async (req, res)=>{
+app.delete('/user/singou', async (req, res)=>{
     const posts = await prisma.usuario.delete (
         {where: id}
     );

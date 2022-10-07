@@ -3,7 +3,7 @@
 <br>
 <em> Como correr el proyecto </em>
 Para que el proyecto este corriendo se tienen que tirar el comando
-<pre> node index.js </pre>
+<pre> node app.js </pre>
 
 # Elementos instalados
 <em><a href="https://www.prisma.io/docs/getting-started/quickstart"> Prisma </a> </em>
@@ -24,7 +24,7 @@ Al ya tener la base de datos creada, correremos el comando
 <pre> npm install express --save</pre>
 <br>
 <em> Nodemailer </em>
-<p>Nodemailer is a module for Node.js indexlications to allow easy as cake email sending. The project got started back in 2010 when there was no sane option to send email messages, today it is the solution most Node.js users turn to by default.</p>
+<p>Nodemailer is a module for Node.js applications to allow easy as cake email sending. The project got started back in 2010 when there was no sane option to send email messages, today it is the solution most Node.js users turn to by default.</p>
 <pre> npm install nodemailer </pre>
 
 
