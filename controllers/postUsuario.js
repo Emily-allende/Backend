@@ -1,31 +1,32 @@
 import express from 'express';
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
 const usuarioRouter = express.Router();
-usuarioRouter.post("/", async (req, res) => { 
+usuarioRouter.post("/", (req, res) => { 
   console.log("Llege")
-  // const { nombre, apellido, empresa, email, contraseña, img_perfil, ubicacion} = req.body
-  const post = await prisma.usuario.findUnique({where: {ID: 222}})
+  const { nombre, apellido, empresa, email, contraseña, img_perfil, ubicacion:{lat, long}} = req.body
+  const post =  prisma.usuario.create({
+    data: {
+      nombre,
+      apellido,
+      empresa,
+      email, 
+      contraseña,
+      img_perfil,
+      ubicacion:{
+        lat,
+        long
+      }
+    }
+  })
   res.json(post);
-  console.log(post)
+  console.log(post);
+  // return jwt.sign({post}, "secretkey", (err, token)=> {
+  //   res.json(token);
+  // })
 })
 
-//  const post= await prisma.usuario.create({
-//     data:{
-//       nombre, 
-//       apellido, 
-//       empresa, 
-//       email, 
-//       contraseña, 
-//       img_perfil, 
-//       ubicacion
-//     }
-//     }
-//   )
-//   res.json(post)
-  
-// })
 
 export {usuarioRouter};
 

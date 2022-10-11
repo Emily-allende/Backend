@@ -1,11 +1,16 @@
-// import { verifyToken } from './verifyToken';
 import express from 'express';
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
+// import { createRequire } from 'module';
 
 const prisma = new PrismaClient()
-const usuarioGetRouter = express.Router();
+const usuRouter = express.Router();
 
-usuarioGetRouter.get("/", async (req, res) => { 
-  const post = await prisma.usuario.findUnique({where: {ID: 222}})
+usuRouter.get("/:UserID", async ({params: {UserID}}, res) => { 
+  // const require = createRequire(import.meta.url);
+  const post = await prisma.usuario.findUnique({where: {id: UserID}})
   res.json(post);
+  // console.log(post);
+  // const url = require('url').parse(req.url, true).query;
 })
+
+export {usuRouter};
