@@ -23,7 +23,7 @@ model beneficio {
   benefactor       benefactor         @relation(fields: [Benefactor], references: [ID], onUpdate: Restrict, map: "beneficio_ibfk_1")
   utilizabeneficio utilizabeneficio[]
 
-  @@app([Benefactor], map: "Benefactor")
+  @@index([Benefactor], map: "Benefactor")
 }
 
 model contactan {
@@ -33,8 +33,8 @@ model contactan {
   contacto contacto @relation(fields: [Contacto], references: [ID], onUpdate: Restrict, map: "contactan_ibfk_1")
   usuario  usuario  @relation(fields: [Usuario], references: [ID], onUpdate: Restrict, map: "contactan_ibfk_2")
 
-  @@app([Contacto], map: "Contacto")
-  @@app([Usuario], map: "Usuario")
+  @@index([Contacto], map: "Contacto")
+  @@index([Usuario], map: "Usuario")
 }
 
 model contacto {
@@ -55,7 +55,7 @@ model donacion {
   donante        donante         @relation(fields: [Donante], references: [ID], onUpdate: Restrict, map: "donacion_ibfk_1")
   recolectadosen recolectadosen?
 
-  @@app([Donante], map: "Donante")
+  @@index([Donante], map: "Donante")
 }
 
 model donante {
@@ -88,8 +88,8 @@ model manejalugarrecoleccion {
   recolector       recolector       @relation(fields: [Recolector], references: [ID], onUpdate: Restrict, map: "manejalugarrecoleccion_ibfk_1")
   lugarrecoleccion lugarrecoleccion @relation(fields: [LugarRecoleccion], references: [ID], onUpdate: Restrict, map: "manejalugarrecoleccion_ibfk_2")
 
-  @@app([LugarRecoleccion], map: "LugarRecoleccion")
-  @@app([Recolector], map: "Recolector")
+  @@index([LugarRecoleccion], map: "LugarRecoleccion")
+  @@index([Recolector], map: "Recolector")
 }
 
 model manejanusuarios {
@@ -101,8 +101,8 @@ model manejanusuarios {
   administrador administrador @relation(fields: [Administrador], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_1")
   usuario       usuario       @relation(fields: [Usuario], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_2")
 
-  @@app([Usuario], map: "Usuario")
-  @@app([Administrador], map: "Administrador")
+  @@index([Usuario], map: "Usuario")
+  @@index([Administrador], map: "Administrador")
 }
 
 model recolectadosen {
@@ -111,7 +111,7 @@ model recolectadosen {
   donacion         donacion         @relation(fields: [Donacion], references: [ID], onUpdate: Restrict, map: "recolectadosen_ibfk_1")
   lugarrecoleccion lugarrecoleccion @relation(fields: [Lugar], references: [ID], onUpdate: Restrict, map: "recolectadosen_ibfk_2")
 
-  @@app([Lugar], map: "Lugar")
+  @@index([Lugar], map: "Lugar")
 }
 
 model recolector {
@@ -121,7 +121,7 @@ model recolector {
   lugarrecoleccion       lugarrecoleccion         @relation(fields: [lugarRecoleccion], references: [ID], onUpdate: Restrict, map: "recolector_ibfk_2")
   manejalugarrecoleccion manejalugarrecoleccion[]
 
-  @@app([lugarRecoleccion], map: "lugarRecoleccion")
+  @@index([lugarRecoleccion], map: "lugarRecoleccion")
 }
 
 model usuario {
@@ -154,7 +154,7 @@ model utilizabeneficio {
   beneficio beneficio @relation(fields: [Beneficio], references: [ID], onUpdate: Restrict, map: "utilizabeneficio_ibfk_2")
 
   @@id([Donante, fecha])
-  @@app([Beneficio], map: "Beneficio")
+  @@index([Beneficio], map: "Beneficio")
 }
 
 model administrador {
