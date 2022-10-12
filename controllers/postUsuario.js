@@ -27,7 +27,6 @@ usuarioRouter.post("/", (req, res) => {
   // })
 })
 
-
 export {usuarioRouter};
 
 // import { Transport } from "./../confing/mail";
