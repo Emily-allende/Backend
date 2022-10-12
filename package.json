@@ -9,7 +9,7 @@
     "ecoloops:migrate":"prisma migrate dev --preview-feature"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ecoloops",
   "license": "ISC",
   "devDependencies": {
     "prisma": "^4.3.1"
