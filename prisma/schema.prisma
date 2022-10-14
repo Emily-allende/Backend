@@ -136,7 +136,6 @@ model usuario {
   dir_esquina     String?           @ecoloops.VarChar(200)
   dir_nrocalle    Int?
   dir_calle       String?           @ecoloops.VarChar(200)
-  empresa         String?           @ecoloops.VarChar(100)
   administrador   administrador?
   benefactor      benefactor?
   contactan       contactan[]
