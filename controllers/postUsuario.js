@@ -1,5 +1,7 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
+import * as jwt from "jsonwebtoken";
+
 
 const prisma = new PrismaClient()
 const usuarioRouter = express.Router();
@@ -17,7 +19,8 @@ usuarioRouter.post("/", (req, res) => {
         lat,
         long
       }
-    }
+    },
+    return: jwt.sign({post},"secretkey", (err, token)=> { res.json({token})}) 
   })
   res.json(post);
   console.log(post);
