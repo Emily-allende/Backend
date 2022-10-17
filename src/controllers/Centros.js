@@ -4,8 +4,8 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient()
 const centrosRouter = express.Router();
 
-centrosRouter.get('/', (req, res)=>{
-    const posts = prisma.lugarrecoleccion.findUnique({where:{ID:10}})
+centrosRouter.get('/', async(req, res)=>{
+    const posts = await prisma.lugarrecoleccion.findMany()
     res.json(posts)
 })
 
