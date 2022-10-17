@@ -5,8 +5,12 @@ const prisma = new PrismaClient()
 const centrosRouter = express.Router();
 
 centrosRouter.get('/', async(req, res)=>{
-    const posts = await prisma.lugarrecoleccion.findMany()
-    res.json(posts)
+    try{
+        const posts = await prisma.lugarrecoleccion.findMany()
+        res.json(posts)   
+    }catch(error){
+        res.json(error)
+    }
 })
 
 centrosRouter.post("/", (req, res)=>{

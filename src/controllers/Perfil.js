@@ -5,9 +5,13 @@ const prisma = new PrismaClient()
 const perfilRouter = express.Router();
 
 perfilRouter.get('/usuario', async (req, res)=>{
-    const posts = await prisma.usuario.findMany({})
-    console.log(posts)
-    res.json(posts)
+    try{
+        const posts = await prisma.usuario.findMany({})
+        console.log(posts)
+        res.json(posts)        
+    }catch(error){
+        res.json(error);
+    }
 })
 
 perfilRouter.delete('/:id', async (req, res)=>{

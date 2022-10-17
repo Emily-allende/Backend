@@ -4,8 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient()
 const donacionRouter = express.Router();
 
-donacionRouter.post("/", (res) => { 
-    console.log("Llege a Donaciones")
+donacionRouter.post("/", (req, res) => { 
     const post =  prisma.donacion.create({
       data:{
           tipo,

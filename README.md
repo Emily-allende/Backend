@@ -15,7 +15,7 @@ Para instalar prisma se tiene que
 <pre> npx prisma init </pre> 
 
 Al ya tener la base de datos creada, correremos el comando
-<pre>npx prisma db pull </pre>
+<pre>npx prisma ecoloops pull </pre>
 
 <h3><a href=""> Json web token </a> </h3>
 <pre> npm install jsonwebtoken </pre>

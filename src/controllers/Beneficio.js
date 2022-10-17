@@ -12,8 +12,12 @@ beneficioRouter.delete("/:id", async (req, res)=>{
 })
 
 beneficioRouter.get('/', async (req, res)=>{
-    const posts = await prisma.beneficio.findMany({})
-    res.json(posts)
+    try{
+        const posts = await prisma.beneficio.findMany({})
+        res.json(posts)
+    }catch(error){
+        res.json(error)
+    }
 })
 
 beneficioRouter.put("/:id", (req, res)=>{
