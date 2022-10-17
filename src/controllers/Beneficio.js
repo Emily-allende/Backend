@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient()
 const beneficioRouter = express.Router();
 
-beneficioRouter.delete("/", async (req, res)=>{
+beneficioRouter.delete("/:id", async (req, res)=>{
     const donacion = await prisma.beneficio.delete({
         where:{id}
     })
@@ -16,7 +16,7 @@ beneficioRouter.get('/', async (req, res)=>{
     res.json(posts)
 })
 
-beneficioRouter.put("/", (req, res)=>{
+beneficioRouter.put("/:id", (req, res)=>{
     const {descripción, imagen, empresa, precio,} =req.body;
     const donacion = prisma.beneficio.update({
         where:{id},
