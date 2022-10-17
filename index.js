@@ -4,9 +4,11 @@ import {centrosRouter} from "./src/controllers/Centros.js";
 import {contactoRouter} from "./src/controllers/Contacto.js";
 
 import express from "express";
+import cors from "cors"
 
 const app = express()
 app.use(express.json()) 
+app.use(cors())
 
 /* Usuarios */ 
 app.use("/users", usuarioRouter);
