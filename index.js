@@ -1,7 +1,11 @@
-import {usuarioRouter} from "./src/controllers/Usuario.js";
-import {beneficioRouter} from "./src/controllers/Beneficio.js";
-import {centrosRouter} from "./src/controllers/Centros.js";
-import {contactoRouter} from "./src/controllers/Contacto.js";
+import { usuarioRouter } from "./src/controllers/Usuario.js";
+import { benefactorRouter } from "./src/controllers/Benefactores.js";
+import { recolectorRouter } from "./src/controllers/Recolectores.js";
+import { admRouter } from "./src/controllers/Admin.js";
+import { beneficioRouter } from "./src/controllers/Beneficio.js";
+import { centrosRouter } from "./src/controllers/Centros.js";
+import { contactoRouter } from "./src/controllers/Contacto.js";
+import { donacionRouter } from "./src/controllers/Donacion.js";
 
 import express from "express";
 import cors from "cors"
@@ -13,14 +17,22 @@ app.use(cors())
 /* Usuarios */ 
 app.use("/users", usuarioRouter);
 
-/*Beneficios*/
-app.use("/beneficios", beneficioRouter);
+app.use("/benefactor", benefactorRouter);
 
-/*Centros */
-app.use("/centros", centrosRouter);
+app.use("/recolector", recolectorRouter);
 
-/*Contacros */
-app.use("/contactos", contactoRouter);
+app.use("/admin", admRouter);
 
+/* Beneficios */
+app.use("/benefits", beneficioRouter);
 
-app.listen(3000, () => console.log("Servidor corriendo en el puerto 3000, http://localhost:3000"))
+/* Centros */
+app.use("/centers", centrosRouter);
+
+/* Contactos */
+app.use("/contacts", contactoRouter);
+
+/* Donaciones */
+app.use("/donation", donacionRouter);
+
+app.listen(3001, () => console.log("Servidor corriendo en el puerto 3001, http://localhost:3001"))

@@ -7,6 +7,12 @@ datasource ecoloops {
   url      = env("DATABASE_URL")
 }
 
+model administrador {
+  ID              Int               @id
+  usuario         usuario           @relation(fields: [ID], references: [ID], onUpdate: Restrict, map: "administrador_ibfk_1")
+  manejanusuarios manejanusuarios[]
+}
+
 model benefactor {
   ID        Int         @id
   empresa   String?     @ecoloops.VarChar(50)
@@ -19,7 +25,9 @@ model beneficio {
   empresa          String             @ecoloops.VarChar(50)
   imagen           Bytes?             @ecoloops.Blob
   descripcion      String             @ecoloops.VarChar(100)
+  precio           Int
   Benefactor       Int
+  disable          Boolean
   benefactor       benefactor         @relation(fields: [Benefactor], references: [ID], onUpdate: Restrict, map: "beneficio_ibfk_1")
   utilizabeneficio utilizabeneficio[]
 
@@ -70,18 +78,15 @@ model lugarrecoleccion {
   ID                     Int                      @id @default(autoincrement())
   nombre                 String                   @ecoloops.VarChar(50)
   imagen                 Bytes?                   @ecoloops.Blob
-  latitud                Int
-  longitud               Int
-  dir_esquina            String?                  @ecoloops.VarChar(200)
-  dir_nrocalle           Int?
-  dir_calle              String?                  @ecoloops.VarChar(200)
+  latitud                Float
+  longitud               Float
   manejalugarrecoleccion manejalugarrecoleccion[]
   recolectadosen         recolectadosen[]
   recolector             recolector[]
 }
 
 model manejalugarrecoleccion {
-  ID               Int              @id
+  ID               Int              @id @default(autoincrement())
   accion           String?          @ecoloops.VarChar(30)
   Recolector       Int
   LugarRecoleccion Int
@@ -101,8 +106,8 @@ model manejanusuarios {
   administrador administrador @relation(fields: [Administrador], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_1")
   usuario       usuario       @relation(fields: [Usuario], references: [ID], onUpdate: Restrict, map: "manejanusuarios_ibfk_2")
 
-  @@index([Usuario], map: "Usuario")
   @@index([Administrador], map: "Administrador")
+  @@index([Usuario], map: "Usuario")
 }
 
 model recolectadosen {
@@ -128,14 +133,11 @@ model usuario {
   ID              Int               @id @default(autoincrement())
   nombre          String            @ecoloops.VarChar(30)
   apellido        String            @ecoloops.VarChar(30)
-  email           String            @ecoloops.VarChar(100)
+  email           String            @unique @ecoloops.VarChar(100)
   contrase_a      String            @map("contraseña") @ecoloops.VarChar(30)
   img_perfil      Bytes?            @ecoloops.Blob
-  latitud         Int?
-  longitud        Int?
-  dir_esquina     String?           @ecoloops.VarChar(200)
-  dir_nrocalle    Int?
-  dir_calle       String?           @ecoloops.VarChar(200)
+  latitud         Float?
+  longitud        Float?
   administrador   administrador?
   benefactor      benefactor?
   contactan       contactan[]
@@ -145,6 +147,7 @@ model usuario {
 }
 
 model utilizabeneficio {
+  ID        Int       @id @default(autoincrement())
   Donante   Int
   Beneficio Int
   fecha     DateTime  @ecoloops.Date
@@ -152,12 +155,6 @@ model utilizabeneficio {
   donante   donante   @relation(fields: [Donante], references: [ID], onUpdate: Restrict, map: "utilizabeneficio_ibfk_1")
   beneficio beneficio @relation(fields: [Beneficio], references: [ID], onUpdate: Restrict, map: "utilizabeneficio_ibfk_2")
 
-  @@id([Donante, fecha])
   @@index([Beneficio], map: "Beneficio")
-}
-
-model administrador {
-  ID              Int               @id
-  usuario         usuario           @relation(fields: [ID], references: [ID], onUpdate: Restrict, map: "administrador_ibfk_1")
-  manejanusuarios manejanusuarios[]
+  @@index([Donante], map: "utilizabeneficio_ibfk_1")
 }

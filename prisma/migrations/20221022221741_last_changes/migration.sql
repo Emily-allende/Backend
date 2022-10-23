@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `admin` (
+CREATE TABLE `administrador` (
     `ID` INTEGER NOT NULL,
 
     PRIMARY KEY (`ID`)
@@ -17,11 +17,12 @@ CREATE TABLE `benefactor` (
 CREATE TABLE `beneficio` (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
     `empresa` VARCHAR(50) NOT NULL,
-    `imagen` BLOB NOT NULL,
+    `imagen` BLOB NULL,
     `descripcion` VARCHAR(100) NOT NULL,
+    `precio` INTEGER NOT NULL,
     `Benefactor` INTEGER NOT NULL,
 
-    app `Benefactor`(`Benefactor`),
+    INDEX `Benefactor`(`Benefactor`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -31,15 +32,15 @@ CREATE TABLE `contactan` (
     `Contacto` INTEGER NOT NULL,
     `Usuario` INTEGER NOT NULL,
 
-    app `Contacto`(`Contacto`),
-    app `Usuario`(`Usuario`),
+    INDEX `Contacto`(`Contacto`),
+    INDEX `Usuario`(`Usuario`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `contacto` (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `logo` BLOB NOT NULL,
+    `logo` BLOB NULL,
     `link` VARCHAR(200) NOT NULL,
     `nroInteracciones` INTEGER NOT NULL,
 
@@ -55,7 +56,7 @@ CREATE TABLE `donacion` (
     `fecha` DATE NOT NULL,
     `valor` INTEGER NOT NULL,
 
-    app `Donante`(`Donante`),
+    INDEX `Donante`(`Donante`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -71,10 +72,9 @@ CREATE TABLE `donante` (
 CREATE TABLE `lugarrecoleccion` (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(50) NOT NULL,
-    `imagen` BLOB NOT NULL,
-    `latitud` INTEGER NOT NULL,
-    `longitud` INTEGER NOT NULL,
-    `direrccion` VARCHAR(200) NOT NULL,
+    `imagen` BLOB NULL,
+    `latitud` DOUBLE NOT NULL,
+    `longitud` DOUBLE NOT NULL,
 
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -82,12 +82,12 @@ CREATE TABLE `lugarrecoleccion` (
 -- CreateTable
 CREATE TABLE `manejalugarrecoleccion` (
     `ID` INTEGER NOT NULL,
-    `accion` VARCHAR(10) NULL,
+    `accion` VARCHAR(30) NULL,
     `Recolector` INTEGER NOT NULL,
     `LugarRecoleccion` INTEGER NOT NULL,
 
-    app `LugarRecoleccion`(`LugarRecoleccion`),
-    app `Recolector`(`Recolector`),
+    INDEX `LugarRecoleccion`(`LugarRecoleccion`),
+    INDEX `Recolector`(`Recolector`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -95,12 +95,12 @@ CREATE TABLE `manejalugarrecoleccion` (
 CREATE TABLE `manejanusuarios` (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
     `fecha` DATE NOT NULL,
-    `accion` VARCHAR(10) NOT NULL,
-    `Admin` INTEGER NOT NULL,
+    `accion` VARCHAR(30) NOT NULL,
+    `Administrador` INTEGER NOT NULL,
     `Usuario` INTEGER NOT NULL,
 
-    app `Admin`(`Admin`),
-    app `Usuario`(`Usuario`),
+    INDEX `Administrador`(`Administrador`),
+    INDEX `Usuario`(`Usuario`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -109,7 +109,7 @@ CREATE TABLE `recolectadosen` (
     `Donacion` INTEGER NOT NULL,
     `Lugar` INTEGER NOT NULL,
 
-    app `Lugar`(`Lugar`),
+    INDEX `Lugar`(`Lugar`),
     PRIMARY KEY (`Donacion`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -118,7 +118,7 @@ CREATE TABLE `recolector` (
     `ID` INTEGER NOT NULL,
     `lugarRecoleccion` INTEGER NOT NULL,
 
-    app `lugarRecoleccion`(`lugarRecoleccion`),
+    INDEX `lugarRecoleccion`(`lugarRecoleccion`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -130,10 +130,10 @@ CREATE TABLE `usuario` (
     `email` VARCHAR(100) NOT NULL,
     `contraseña` VARCHAR(30) NOT NULL,
     `img_perfil` BLOB NULL,
-    `latitud` INTEGER NULL,
-    `longitud` INTEGER NULL,
-    `direccion` VARCHAR(200) NULL,
+    `latitud` DOUBLE NULL,
+    `longitud` DOUBLE NULL,
 
+    UNIQUE INDEX `usuario_email_key`(`email`),
     PRIMARY KEY (`ID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -144,12 +144,12 @@ CREATE TABLE `utilizabeneficio` (
     `fecha` DATE NOT NULL,
     `valor` INTEGER NOT NULL,
 
-    app `Beneficio`(`Beneficio`),
+    INDEX `Beneficio`(`Beneficio`),
     PRIMARY KEY (`Donante`, `fecha`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `admin` ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `usuario`(`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `administrador` ADD CONSTRAINT `administrador_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `usuario`(`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 -- AddForeignKey
 ALTER TABLE `benefactor` ADD CONSTRAINT `benefactor_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `usuario`(`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
@@ -176,7 +176,7 @@ ALTER TABLE `manejalugarrecoleccion` ADD CONSTRAINT `manejalugarrecoleccion_ibfk
 ALTER TABLE `manejalugarrecoleccion` ADD CONSTRAINT `manejalugarrecoleccion_ibfk_2` FOREIGN KEY (`LugarRecoleccion`) REFERENCES `lugarrecoleccion`(`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 -- AddForeignKey
-ALTER TABLE `manejanusuarios` ADD CONSTRAINT `manejanusuarios_ibfk_1` FOREIGN KEY (`Admin`) REFERENCES `admin`(`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `manejanusuarios` ADD CONSTRAINT `manejanusuarios_ibfk_1` FOREIGN KEY (`Administrador`) REFERENCES `administrador`(`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 -- AddForeignKey
 ALTER TABLE `manejanusuarios` ADD CONSTRAINT `manejanusuarios_ibfk_2` FOREIGN KEY (`Usuario`) REFERENCES `usuario`(`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
